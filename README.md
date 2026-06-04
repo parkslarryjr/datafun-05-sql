@@ -184,3 +184,19 @@ Press `Ctrl+c` (both keys together) or `Ctrl+Z` then `Enter` on Windows.
 | INFO | P05 | ========================
 | INFO | P05 | END main()
 ```
+# Technical Modifications
+
+## What I changed
+I added a new SQL query file called `parks_retail_query_row_counts.sql` that counts the number of rows in the `store` and `sale` tables.
+
+I also modified the `case_retail_query_sales_by_category.sql` file by changing the ORDER BY clause to sort results in ascending order (`ASC`) instead of descending.
+
+## Why I made the change
+I added the row count query to help verify that the data was loaded correctly into the database tables.
+
+I changed the sorting order to better understand the data from lowest to highest values instead of highest to lowest.
+
+## What I observed after running the project
+After running the pipeline again, everything executed successfully with no errors.
+
+The new row count query correctly showed the number of records in each table, and the category results were displayed in ascending order as expected.
