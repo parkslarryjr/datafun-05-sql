@@ -1,3 +1,122 @@
+## Custom Project
+
+### Dataset
+
+The chosen domain is a **library system** with two related entities:
+
+- **branch (parent table)**
+  Represents library locations such as Downtown Branch, East Side Branch, and South Branch.
+
+- **checkout (child table)**
+  Represents individual checkout transactions for library materials.
+
+#### Relationship (1-to-many)
+
+This is a **one-to-many (1:M)** relationship:
+
+- One branch can have many checkouts
+- Each checkout belongs to exactly one branch using `branch_id` as the foreign key
+
+This relational structure allows us to analyze activity per branch and aggregate usage across the system.
+
+---
+
+### Phase 4 Initial Modifications
+
+The small technical change I made during Phase 4 was adding a new SQL query file:
+
+- `parks_retail_query_row_counts.sql`
+
+This query counts the number of rows in the main tables to verify that data loaded correctly:
+
+- `branch`
+- `checkout`
+
+This helps validate that the ETL pipeline is working as expected.
+
+#### Verification
+
+I confirmed the pipeline still runs successfully by:
+
+- Running `uv run python -m datafun.app_library_duckdb_parks`
+- Checking that all SQL scripts executed without errors
+- Confirming row counts and query outputs printed in the logs
+
+---
+
+### Phase 5 Custom Project
+
+For Phase 5, I built a complete **library analytics pipeline** using DuckDB.
+
+#### SQL Files Created
+
+- `parks_library_bootstrap.sql` → creates tables and loads CSV data
+- `parks_library_clean.sql` → resets database tables
+- `parks_library_query_branch_count.sql` → counts library branches
+- `parks_library_query_checkout_count.sql` → counts all checkouts
+- `parks_library_query_checkout_aggregate.sql` → summarizes total activity
+- `parks_library_query_checkouts_by_branch.sql` → groups checkouts by branch
+- `parks_library_kpi_borrowing.sql` → KPI showing checkout activity per branch
+
+#### Python Script
+
+- `app_library_duckdb_parks.py`
+
+This script:
+- Runs the clean step
+- Runs the bootstrap step
+- Executes all SQL query files
+- Logs results using Python
+
+It acts as an orchestration layer between Python and SQL.
+
+#### Database Output
+
+The pipeline generates a DuckDB database file:
+
+- `artifacts/duckdb/library.duckdb`
+
+This file contains the fully built relational database after the pipeline runs.
+
+#### Example Interesting Result
+
+One interesting result from the pipeline was:
+
+- Each branch had exactly 10 checkouts
+- Total system checkouts = 30
+- Total fine amount = 19.50
+
+This shows a balanced dataset and confirms correct loading and grouping logic.
+
+---
+
+### Phase 5 Insights
+
+This project showed that once a SQL pipeline is built, adding new analysis is very easy. SQL is especially powerful for grouping and aggregation tasks in relational datasets.
+
+Python serves as an orchestration layer that runs SQL scripts, logs results, and manages the workflow.
+
+The combination of:
+- SQL (data logic)
+- Python (automation)
+- DuckDB (storage engine)
+
+creates a simple but powerful analytics pipeline.
+
+---
+
+### SQL vs Pandas Insight
+
+SQL is better than pandas when:
+- Data is stored in relational tables
+- You need joins between entities (branch ↔ checkout)
+- You are aggregating large structured datasets
+
+In this project, SQL made it easy to:
+- Group checkouts by branch
+- Compute totals and KPIs
+- Keep logic readable and reusable across files
+
 # Data Analytics Fundamentals
 
 This site provides documentation for this project.

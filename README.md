@@ -200,3 +200,92 @@ I changed the sorting order to better understand the data from lowest to highest
 After running the pipeline again, everything executed successfully with no errors.
 
 The new row count query correctly showed the number of records in each table, and the category results were displayed in ascending order as expected.
+
+# Phase 5. Apply the Skills to a New Problem
+
+## 1. Domain Description and Relationship
+
+The chosen domain is a library system with two related entities:
+
+- **branch (parent table)**
+  Represents library locations (e.g., Downtown Branch, East Side Branch).
+
+- **checkout (child table)**
+  Represents individual material checkouts made by library users.
+
+### Relationship
+
+This is a **one-to-many (1:M)** relationship:
+
+- One branch can have many checkouts.
+- Each checkout belongs to exactly one branch through `branch_id`.
+
+---
+
+## 2. SQL Pipeline Overview
+
+The pipeline follows a structured ETL-style process:
+
+- **Clean step**
+  Removes existing tables to reset the database.
+
+- **Bootstrap step**
+  Creates `branch` and `checkout` tables and loads data from CSV files into DuckDB.
+
+- **Query step**
+  Runs multiple analytical SQL queries and logs results using Python.
+
+- **KPI step**
+  Calculates checkout activity by branch for decision-making.
+
+---
+
+## 3. SQL Queries Implemented
+
+The project includes multiple meaningful queries:
+
+- Total number of branches
+- Total number of checkouts
+- Checkout aggregation (total + average values)
+- Checkouts grouped by branch
+- KPI query: checkouts by branch with full branch details
+
+These queries demonstrate filtering, aggregation, grouping, and joining relational tables.
+
+---
+
+## 4. Custom SQL Query (KPI)
+
+A custom KPI query was created:
+
+> “Which library branches have the most checkouts?”
+
+This query joins `branch` and `checkout`, groups results by branch, and calculates total checkout activity per location.
+
+---
+
+## 5. Observations After Running the Pipeline
+
+After running the pipeline:
+
+- The database successfully created 3 library branches.
+- A total of 30 checkout records were loaded.
+- Each branch had 10 checkouts, showing balanced sample data.
+- All SQL scripts executed successfully without errors.
+- Query results were printed and logged through Python.
+
+---
+
+## 6. Insights Gained
+
+This project demonstrated that SQL is very effective for analyzing structured relational data. Once the pipeline is set up, modifying or adding new SQL queries is straightforward and does not require changes to the underlying data loading process.
+
+I also learned how Python can act as an orchestration layer to execute SQL scripts, log outputs, and manage a full analytics workflow. This separation of SQL (logic) and Python (execution) makes the system easier to maintain and scale.
+
+---
+
+## 7. SQL vs Pandas
+
+SQL is often a better tool than pandas when working with relational datasets stored in structured tables. It allows efficient aggregation, filtering, and joins directly at the database level without loading all data into memory.
+
+In this project, SQL was especially effective for grouping checkouts by branch and computing KPIs. These operations are simpler and more readable in SQL than they would be in pandas, particularly as the dataset grows or becomes more relational.

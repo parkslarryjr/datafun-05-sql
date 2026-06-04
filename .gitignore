@@ -107,3 +107,9 @@ dist/
 
 # WHY: Notebook checkpoint state is generated.
 .ipynb_checkpoints/
+
+# === DuckDB / data pipeline outputs ===
+
+# WHY: These are generated artifacts and should never be committed.
+artifacts/
+*.duckdb
